@@ -40,19 +40,35 @@ basicCN <- ggplot(mydata,aes(x=DEGREE,y=WORDSUM))
 basicCN + geom_boxplot()
 ```
 
+Looking at the graph above, we can see that Bachelor's and junior collage were roughly similar results, Graduate school and LT high school are very different and people with a highschool degree fall around LT high school but lower then Bachelor's.
 <!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
 ### Numerical Descriptive Results
 ```{r}
 favstats(WORDSUM~DEGREE,data=mydata)
 ```
+the numerical data above shows a small difference in students within LT high school and junior collage, while Bachelor's almost double in complicity while highschoolers more then quadruple junior collages. Now right now there is going to be some statistical difference but it will be explained into two parts. First  will be running a one way anova to hopefully get our hands on some statistical data.
+
 <!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
 ## Inferential Results
 
+
 <!--State hypothesis clearly.  Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc.  Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
 
+```{r}
+model1 <- aov(WORDSUM~DEGREE,data=mydata)
+summary.aov(model1)
+```
+the probability of getting these results are significant in one one thousands level. We still need to find the difference between the schools
 
+```{r}
+#we specify the margins starting at the bottom and proceeding clockwise - thus 8.7 is the left side margin to hold the names of the factors
+par(mar = c(3, 15.7, 2, 2))
+plot(TukeyHSD(model1,conf.level=.98),las=2)
+```
+
+The Highschool and LT highschool are different from the gradute school, nothing else is really different
 # Discussion and Conclusion
-
+After getting the box plot, there still wasnt enough information to tell a difference, so we changed the default .95 to .98 which shows that both Junior collage and high school were not different at the 98%. The Default 95% would have told us that it was different.
 <!--Discussion and conclusion here.  If you found a relationship be sure to consider whether the relationship occurs because one of the variavbles causes the other, or whether they perhasps are related for some other reason.  Watch the chapter 6 videos from the GeorgeTown videos collection.!-->
